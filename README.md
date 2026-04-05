@@ -76,9 +76,11 @@ Backend/
    ```
    Edit `.env` and update with your PostgreSQL credentials:
    ```
-   DATABASE_URL=postgresql://username:password@localhost:5432/finance_db
+   DATABASE_URL=postgresql://username:password@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres?sslmode=require&pgbouncer=true&connection_limit=1
    JWT_SECRET=your-super-secret-jwt-key-change-this
    ```
+
+   If you use the Supabase pooler, keep `sslmode=require` and the PgBouncer flags in place.
 
 4. **Set up the database**:
    ```bash
