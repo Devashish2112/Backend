@@ -1,6 +1,32 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import { config } from './index';
 
+const getServerUrls = () => {
+  const servers: Array<{ url: string; description: string }> = [];
+
+  const appUrl = process.env.APP_URL;
+  const vercelUrl = process.env.VERCEL_URL;
+
+  if (appUrl) {
+    servers.push({
+      url: appUrl,
+      description: 'Production server',
+    });
+  } else if (vercelUrl) {
+    servers.push({
+      url: `https://${vercelUrl}`,
+      description: 'Vercel deployment',
+    });
+  }
+
+  servers.push({
+    url: `http://localhost:${config.port}`,
+    description: 'Development server',
+  });
+
+  return servers;
+};
+
 const options: swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',
@@ -13,12 +39,7 @@ const options: swaggerJsdoc.Options = {
         email: 'support@finance-backend.com',
       },
     },
-    servers: [
-      {
-        url: `http://localhost:${config.port}`,
-        description: 'Development server',
-      },
-    ],
+    servers: getServerUrls(),
     components: {
       securitySchemes: {
         bearerAuth: {
